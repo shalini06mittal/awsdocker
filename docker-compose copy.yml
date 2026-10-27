@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: paysprint-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-paysprint}
+      POSTGRES_USER: ${POSTGRES_USER:-paysprint}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      # Expose PostgreSQL only on this machine. Remove the 127.0.0.1 binding
+      # only if remote database access is explicitly required.
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres.sql:/docker-entrypoint-initdb.d/postgres.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - paysprint
+
+  springboot:
+    build:
+      context: ./12-containerising-spring-boot-services
+      dockerfile: Dockerfile
+    container_name: paysprint-springboot
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-paysprint}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-paysprint}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - paysprint
+
+  nestjs:
+    build:
+      context: ./15-mission-build-openapi-docs-and-replacing-the-sprint7-stub
+      dockerfile: Dockerfile
+    container_name: paysprint-nestjs
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+    ports:
+      - "3000:3000"
+    networks:
+      - paysprint
+
+  angular:
+    build:
+      context: ./mission-ui
+      dockerfile: Dockerfile
+    container_name: paysprint-angular
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - springboot
+    networks:
+      - paysprint
+
+volumes:
+  postgres_data:
+
+networks:
+  paysprint:
+    driver: bridge

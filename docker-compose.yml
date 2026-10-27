@@ -57,19 +57,6 @@ services:
     networks:
       - paysprint
 
-  angular:
-    build:
-      context: ./mission-ui
-      dockerfile: Dockerfile
-    container_name: paysprint-angular
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - springboot
-    networks:
-      - paysprint
-
 volumes:
   postgres_data:
 
