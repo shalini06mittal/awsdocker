@@ -215,8 +215,9 @@ cd awsdocker
 
 ```bash
 cat > .env <<'EOF'
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_password
+POSTGRES_DB=paysprint
+POSTGRES_USER=paysprint
+POSTGRES_PASSWORD=mission123
 EOF
 ```
 
