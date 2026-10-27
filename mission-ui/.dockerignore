@@ -1,0 +1,8 @@
+node_modules
+dist
+.angular
+.git
+.vscode
+e2e
+playwright-report
+test-results

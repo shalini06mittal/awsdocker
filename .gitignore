@@ -1,0 +1,87 @@
+# ==========================================
+# Environment variables and secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# ==========================================
+# macOS and IDE files
+# ==========================================
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Angular / Node.js / NestJS
+# ==========================================
+node_modules/
+dist/
+.angular/
+coverage/
+.nx/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# NestJS build output
+# (dist/ is already ignored above)
+
+# ==========================================
+# Java / Spring Boot / Maven
+# ==========================================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Gradle (if used)
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ==========================================
+# PostgreSQL local files and backups
+# ==========================================
+*.dump
+*.backup
+*.bak
+*.sql.gz
+*.pgdata/
+
+# PostgreSQL Docker data should live in a
+# named volume, not in the Git repository.
+postgres-data/
+pgdata/
+
+# ==========================================
+# Docker and local overrides
+# ==========================================
+docker-compose.override.yml
+compose.override.yaml
+
+# ==========================================
+# Test and temporary files
+# ==========================================
+.tmp/
+temp/
+tmp/
+*.tmp
+*.swp
