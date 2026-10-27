@@ -42,7 +42,7 @@ services:
     networks:
       - paysprint
 
-  nextjs:
+  nestjs:
     build:
       context: ./15-mission-build-openapi-docs-and-replacing-the-sprint7-stub
       dockerfile: Dockerfile
