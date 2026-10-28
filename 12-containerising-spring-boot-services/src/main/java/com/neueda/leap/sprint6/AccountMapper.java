@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 public interface AccountMapper {
 
     InstrumentRow findInstrument(@Param("ticker") String ticker);
+    
 
     HoldingRow findHolding(@Param("accountId") int accountId, @Param("ticker") String ticker);
 
